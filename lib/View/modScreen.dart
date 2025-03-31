@@ -1,6 +1,7 @@
 import 'package:convo/Controller/offlineSave.dart';
 import 'package:flutter/material.dart';
 import 'package:auto_size_text_field/auto_size_text_field.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:convo/Model/businessCard_model.dart';
 import 'package:convo/View/Widget/BusinessCard.dart';
@@ -92,9 +93,9 @@ class _modScreenState extends State<modScreen> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
-            spacing: 20,
+            spacing: 20.h,
             children: [
-              const SizedBox(height: 20),
+              SizedBox(height: 20.h),
               businessCard(
                 name:
                     _nameController.text.isEmpty
@@ -108,89 +109,95 @@ class _modScreenState extends State<modScreen> {
                 info: _infoControllers.map((c) => c.text).toList(),
                 image: "assets/$_selectedImage.jpg",
               ),
-              const SizedBox(height: 20),
-              Column(
-                spacing: 20,
-                children: [
-                  _WidgetTextField(_nameController, "Enter Your Name"),
-                  _WidgetTextField(_positionController, "Enter Your Position"),
-                  SegmentedButton(
-                    segments: List.generate(5, (index) {
-                      int value = index + 1;
-                      return ButtonSegment<int>(
-                        value: value,
-                        label: Text(value.toString()),
-                      );
-                    }),
-                    selected: {_selectedImage},
-                    onSelectionChanged: (Set<int> newSelection) {
-                      setState(() => _selectedImage = newSelection.first);
-                    },
-                  ),
-                  SizedBox(
-                    height: _listLength * 80,
-                    child: ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: _listLength,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 20),
-                          child: Row(
-                            children: [
-                              DropdownButton<IconData>(
-                                value: _icons[index],
-                                items:
-                                    _availableIcons
-                                        .map(
-                                          (icon) => DropdownMenuItem(
-                                            value: icon,
-                                            child: Icon(icon),
-                                          ),
-                                        )
-                                        .toList(),
-                                onChanged:
-                                    (newIcon) => setState(
-                                      () => _icons[index] = newIcon!,
-                                    ),
-                              ),
-                              Expanded(
-                                child: _WidgetTextField(
-                                  _infoControllers[index],
-                                  "Enter Data",
-                                ),
-                              ),
-                              if (_listLength < 4 && index == _listLength - 1)
-                                IconButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      _listLength++;
-                                      _infoControllers.add(
-                                        TextEditingController(),
-                                      );
-                                      _icons.add(_availableIcons.first);
-                                    });
-                                  },
-                                  icon: const Icon(Icons.add),
-                                ),
-                              if (_listLength > 1)
-                                IconButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      _listLength--;
-                                      _infoControllers.removeAt(index);
-                                      _icons.removeAt(index);
-                                    });
-                                  },
-                                  icon: const Icon(Icons.remove),
-                                ),
-                            ],
-                          ),
+              SizedBox(height: 20.h),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                child: Column(
+                  spacing: 20.h,
+                  children: [
+                    _WidgetTextField(_nameController, "Enter Your Name"),
+                    _WidgetTextField(
+                      _positionController,
+                      "Enter Your Position",
+                    ),
+                    SegmentedButton(
+                      segments: List.generate(5, (index) {
+                        int value = index + 1;
+                        return ButtonSegment<int>(
+                          value: value,
+                          label: Text(value.toString()),
                         );
+                      }),
+                      selected: {_selectedImage},
+                      onSelectionChanged: (Set<int> newSelection) {
+                        setState(() => _selectedImage = newSelection.first);
                       },
                     ),
-                  ),
-                  SizedBox(height: 50),
-                ],
+                    SizedBox(
+                      height: _listLength * 80.h,
+                      child: ListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: _listLength,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: EdgeInsets.only(bottom: 20.h),
+                            child: Row(
+                              children: [
+                                DropdownButton<IconData>(
+                                  value: _icons[index],
+                                  items:
+                                      _availableIcons
+                                          .map(
+                                            (icon) => DropdownMenuItem(
+                                              value: icon,
+                                              child: Icon(icon),
+                                            ),
+                                          )
+                                          .toList(),
+                                  onChanged:
+                                      (newIcon) => setState(
+                                        () => _icons[index] = newIcon!,
+                                      ),
+                                ),
+                                Expanded(
+                                  child: _WidgetTextField(
+                                    _infoControllers[index],
+                                    "Enter Data",
+                                  ),
+                                ),
+                                if (_listLength < 4 && index == _listLength - 1)
+                                  IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        _listLength++;
+                                        _infoControllers.add(
+                                          TextEditingController(),
+                                        );
+                                        _icons.add(_availableIcons.first);
+                                      });
+                                    },
+                                    icon: const Icon(Icons.add),
+                                  ),
+                                if (_listLength > 1)
+                                  IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        _listLength--;
+                                        _infoControllers.removeAt(index);
+                                        _icons.removeAt(index);
+                                      });
+                                    },
+                                    icon: const Icon(Icons.remove),
+                                  ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    SizedBox(height: 50.h),
+                  ],
+                ),
               ),
             ],
           ),

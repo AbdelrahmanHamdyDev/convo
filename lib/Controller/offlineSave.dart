@@ -5,9 +5,6 @@ class OfflineStorage {
   Future<void> saveJson(String key, Map<String, dynamic> data) async {
     final prefs = await SharedPreferences.getInstance();
     String jsonString = jsonEncode(data);
-    print(
-      "save:=============================$jsonString=================================",
-    );
     await prefs.setString(key, jsonString);
   }
 
@@ -16,9 +13,6 @@ class OfflineStorage {
     String? jsonString = prefs.getString(key);
 
     if (jsonString != null && jsonString.isNotEmpty) {
-      print(
-        "load:=============================$jsonString=================================",
-      );
       return jsonDecode(jsonString);
     } else {
       return null;

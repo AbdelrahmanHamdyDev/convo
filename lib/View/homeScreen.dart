@@ -1,6 +1,9 @@
 import 'dart:math' as math;
 import 'package:convo/Controller/offlineSave.dart';
+import 'package:convo/View/scannerScreen.dart';
+import 'package:convo/View/sharedScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:convo/Model/businessCard_model.dart';
 import 'package:convo/View/Widget/BusinessCard.dart';
@@ -34,7 +37,7 @@ class _homeScreenState extends State<homeScreen> {
   }
 
   Future<void> _navigateToModScreen(BuildContext context) async {
-    final userModResult = await Navigator.of(context).push<BusinessCardModel>(
+    final userModResult = await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => modScreen(businessCardData: _myBusinessCard),
       ),
@@ -48,29 +51,78 @@ class _homeScreenState extends State<homeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          onPressed: () => _navigateToModScreen(context),
-          icon: const Icon(Icons.mode),
-        ),
-        // actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.share))],
-      ),
-      body: Center(
-        child: Transform.rotate(
-          angle: math.pi / 2,
-          child: businessCard(
-            name: _myBusinessCard.name,
-            position: _myBusinessCard.position,
-            icons:
-                _myBusinessCard.contactInfo
-                    .map((infoElement) => infoElement.icon)
-                    .toList(),
-            info:
-                _myBusinessCard.contactInfo
-                    .map((infoElement) => infoElement.info)
-                    .toList(),
-            image: _myBusinessCard.imagePath,
+        actions: [
+          PopupMenuButton(
+            onSelected: (value) {
+              if (value == 'share') {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder:
+                        (context) => shareScreen(businessCard: _myBusinessCard),
+                  ),
+                );
+              } else if (value == 'scan') {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => scannerScreen()),
+                );
+              } else if (value == 'modify') {
+                _navigateToModScreen(context);
+              }
+            },
+            itemBuilder:
+                (context) => [
+                  PopupMenuItem(
+                    value: 'share',
+                    child: Row(
+                      spacing: 10.w,
+                      children: [Icon(Icons.share), Text('Share')],
+                    ),
+                  ),
+                  PopupMenuItem(
+                    value: 'scan',
+                    child: Row(
+                      spacing: 10.w,
+                      children: [Icon(FontAwesomeIcons.expand), Text('Scan')],
+                    ),
+                  ),
+                  PopupMenuItem(
+                    value: 'modify',
+                    child: Row(
+                      spacing: 10.w,
+                      children: [Icon(Icons.mode), Text('modify')],
+                    ),
+                  ),
+                ],
           ),
-        ),
+        ],
+      ),
+      body: TweenAnimationBuilder(
+        duration: const Duration(seconds: 1),
+        tween: Tween(begin: 2.0, end: 0.0),
+        curve: Curves.fastOutSlowIn,
+        builder: (BuildContext context, dynamic value, Widget? child) {
+          return Align(
+            alignment: Alignment(0, value),
+            child: Transform.rotate(
+              angle: math.pi / 2,
+              child: businessCard(
+                name: _myBusinessCard.name,
+                position: _myBusinessCard.position,
+                icons:
+                    _myBusinessCard.contactInfo
+                        .map((infoElement) => infoElement.icon)
+                        .toList(),
+                info:
+                    _myBusinessCard.contactInfo
+                        .map((infoElement) => infoElement.info)
+                        .toList(),
+                image: _myBusinessCard.imagePath,
+              ),
+            ),
+          );
+        },
       ),
     );
   }

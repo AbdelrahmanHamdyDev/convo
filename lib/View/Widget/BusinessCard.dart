@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class businessCard extends StatelessWidget {
   const businessCard({
@@ -19,7 +20,7 @@ class businessCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
-      aspectRatio: 3 / 2,
+      aspectRatio: (3 / 2),
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
@@ -32,25 +33,25 @@ class businessCard extends StatelessWidget {
           ],
           image: DecorationImage(fit: BoxFit.fill, image: AssetImage(image)),
         ),
-        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
-        margin: EdgeInsets.symmetric(horizontal: 20),
+        padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 30.w),
+        margin: EdgeInsets.symmetric(horizontal: 20.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Text(name, style: TextStyle(fontSize: 32)),
-            Text(position, style: TextStyle(fontSize: 20)),
+            Text(name, style: TextStyle(fontSize: 25.sp), maxLines: 1),
+            Text(position, style: TextStyle(fontSize: 18.sp)),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.only(top: 20),
+                padding: EdgeInsets.only(top: 10.h),
                 child: ListView.builder(
                   physics: NeverScrollableScrollPhysics(),
                   itemCount: info.length,
                   itemBuilder:
                       (context, index) => Padding(
-                        padding: EdgeInsets.only(bottom: 10),
+                        padding: EdgeInsets.only(bottom: 10.h),
                         child: Row(
-                          spacing: 10,
+                          spacing: 10.w,
                           children: [Icon(icons[index]), Text(info[index])],
                         ),
                       ),
